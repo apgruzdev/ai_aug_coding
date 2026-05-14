@@ -1,0 +1,18 @@
+# Claude Code — personal overrides, never commit
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.egg-info/
+dist/
+.pytest_cache/
+
+# Node / TypeScript
+node_modules/
+dist/
+.env
+.env.local
+*.tsbuildinfo
