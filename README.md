@@ -37,5 +37,6 @@ Branch from this repo to start a new project with all the defaults already in pl
 ## Usage
 
 1. Branch from this repo
-2. Update `CLAUDE.md` with project context
-3. Start coding following [`docs/development-process.md`](docs/development-process.md)
+2. Add `ANTHROPIC_API_KEY` secret — GitHub → Settings → Secrets and variables → Actions
+3. Update `CLAUDE.md` with project context
+4. Start coding following [`docs/development-process.md`](docs/development-process.md)
