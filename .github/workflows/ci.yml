@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint backend (ruff)
+        if: hashFiles('backend/**/*.py') != ''
+        uses: astral-sh/ruff-action@v3
+        with:
+          src: backend
+
+      - name: Lint frontend (eslint)
+        if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
+        run: |
+          cd frontend && npm ci && npm run lint
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test backend (pytest)
+        if: hashFiles('backend/**/*.py') != ''
+        run: |
+          cd backend
+          pip install -e ".[dev]"
+          pytest
+
+      - name: Test frontend (vitest)
+        if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
+        run: |
+          cd frontend && npm ci && npm test
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Type check frontend (tsc)
+        if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
+        run: |
+          cd frontend && npm ci && npm run typecheck
