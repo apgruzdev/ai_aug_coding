@@ -25,6 +25,16 @@ paths:
 - Tests + Coverage: **pytest** + **pytest-cov** (coverage report on every test run, configured in `pyproject.toml`)
 - Before declaring code complete: mentally verify it passes `ruff check` + `ruff format --check` + `mypy --strict`
 
+Run from `backend/` (first time: `uv venv && source .venv/bin/activate`):
+
+```bash
+uv pip install -e ".[dev]"  # install all deps including dev
+ruff check .                 # lint
+ruff format .                # format in-place (CI uses --check)
+mypy .                       # type check
+pytest                       # tests with coverage
+```
+
 ## Testing
 
 - Framework: **pytest**. No unittest-style classes unless wrapping legacy code.
