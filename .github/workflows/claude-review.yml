@@ -25,12 +25,18 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           direct_prompt: |
-            Review this pull request. For every finding include a concrete fix.
+            Review this pull request. Read the diff and post findings as inline PR comments.
 
-            Focus on:
-            1. Correctness: logic errors, edge cases, null handling
-            2. Security: injection, auth bypass, data exposure
-            3. Maintainability: naming, complexity, duplication
-            4. Compliance with project rules in .claude/rules/
+            Check:
+            - Correctness: logic errors, edge cases, null handling
+            - Security: injection, auth bypass, data exposure
+            - Code quality: naming, complexity, duplication, error handling
+            - Compliance with project rules in .claude/rules/
 
-            Post findings as inline PR comments. Be concise.
+            Categorize every issue:
+            - Critical (must fix): bugs, security issues, broken functionality
+            - Important (should fix): architecture problems, missing error handling, test gaps
+            - Minor (nice to have): style, optimization, polish
+
+            For each issue: file:line reference, what's wrong, why it matters, how to fix.
+            End with a top-level summary comment: "Ready to merge: Yes / No / With fixes" + 1-2 sentence assessment.
