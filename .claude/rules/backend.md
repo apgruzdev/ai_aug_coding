@@ -19,10 +19,9 @@ paths:
 
 ## Code Quality Toolchain
 
-- Formatter: **black** (line length 88)
-- Linter: **ruff** (replaces flake8/isort/pyupgrade)
-- Type checker: **mypy** or **pyright** (strict mode preferred)
-- Before declaring code complete: mentally verify it passes `ruff check` + `mypy --strict`
+- Formatter + Linter: **ruff** (`ruff format` + `ruff check`, line length 88, configured in `pyproject.toml`)
+- Type checker: **mypy** (strict mode, configured in `pyproject.toml`)
+- Before declaring code complete: mentally verify it passes `ruff check` + `ruff format --check` + `mypy --strict`
 
 ## AI-Assisted Development Rules
 

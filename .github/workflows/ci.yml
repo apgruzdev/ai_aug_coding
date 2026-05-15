@@ -12,9 +12,10 @@ jobs:
 
       - name: Lint backend (ruff)
         if: hashFiles('backend/**/*.py') != ''
-        uses: astral-sh/ruff-action@v3
-        with:
-          src: backend
+        run: |
+          pip install ruff
+          ruff check backend/
+          ruff format --check backend/
 
       - name: Lint frontend (eslint)
         if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
@@ -42,6 +43,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Type check backend (mypy)
+        if: hashFiles('backend/**/*.py') != ''
+        run: |
+          cd backend
+          pip install -e ".[dev]"
+          mypy .
 
       - name: Type check frontend (tsc)
         if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
