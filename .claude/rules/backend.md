@@ -34,6 +34,21 @@ paths:
 - Each test must be independent — no shared mutable state, no order dependency.
 - Test the public API, not implementation details. Refactoring internals must not break tests.
 
+Async tests (`asyncio_mode = "auto"` is configured — no `@pytest.mark.asyncio` decorator needed):
+```python
+async def test_create_user(async_client: AsyncClient) -> None:
+    response = await async_client.post("/users", json={"name": "Alice"})
+    assert response.status_code == 201
+```
+
+FastAPI test client fixture pattern:
+```python
+@pytest.fixture
+async def async_client(app: FastAPI) -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        yield client
+```
+
 ## Stack Decisions
 
 Use these libraries for common tasks. Don't introduce alternatives without a strong reason documented in the PR.
@@ -75,6 +90,26 @@ Rules:
 - One `Settings(BaseSettings)` class per service, loaded from environment variables / `.env`.
 - All secrets via environment variables — never hardcoded, never committed.
 - Expose settings via `@lru_cache` singleton: `get_settings() -> Settings`.
+
+### Async Patterns
+
+- **Never call blocking I/O in async handlers**: no `requests`, no synchronous `open()`, no sync SQLAlchemy calls. Use `httpx.AsyncClient`, `aiofiles`, `AsyncSession`.
+- Initialize shared resources (DB connection pool, HTTP client) in FastAPI lifespan — not at module level:
+```python
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    async with engine.begin() as conn:
+        ...  # startup
+    yield
+    await engine.dispose()  # shutdown
+```
+- Use `asyncio.gather()` for concurrent independent operations; avoid sequential `await` when parallelism is possible.
+- Yield DB sessions via dependency, never share a session across requests:
+```python
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    async with AsyncSessionLocal() as session:
+        yield session
+```
 
 ### Logging — structlog
 
