@@ -34,6 +34,54 @@ paths:
 - Each test must be independent — no shared mutable state, no order dependency.
 - Test the public API, not implementation details. Refactoring internals must not break tests.
 
+## Stack Decisions
+
+Use these libraries for common tasks. Don't introduce alternatives without a strong reason documented in the PR.
+
+### Web API — FastAPI
+
+- **FastAPI** for all HTTP APIs. Use async handlers by default.
+- Organise routes with `APIRouter`; mount routers in `main.py`.
+- Use Pydantic models for all request/response schemas — never raw `dict`.
+- Use `Depends()` for shared resources: DB sessions, auth, settings.
+
+### Data Validation — Pydantic
+
+Pydantic is the primary tool for all structured data — not just API schemas. Use it at every data boundary:
+
+- **API**: request bodies, response models, query parameters
+- **Config**: via `pydantic-settings` (see below)
+- **External data**: third-party API responses, file parsing, event payloads
+- **Internal domain models**: wherever validation or coercion matters
+
+Rules:
+- Use **Pydantic v2**. Never v1 patterns: no `class Config:`, no `.dict()`, no `@validator`.
+- Use `model_config = ConfigDict(...)` instead of `class Config`.
+- Use `model_dump()` / `model_validate()` instead of `.dict()` / `.from_orm()`.
+- Enable `strict=True` to prevent silent type coercion where correctness matters.
+- Use `@field_validator` and `@model_validator` for validation logic; keep models declarative.
+- ORM → schema: `Model.model_validate(orm_obj, from_attributes=True)`.
+
+### Database — SQLAlchemy 2.0 + Alembic
+
+- Use **SQLAlchemy 2.0** mapped class style — not legacy 1.x `declarative_base()`.
+- Use `DeclarativeBase` with full type annotations on columns (`Mapped[int]`, `Mapped[str | None]`).
+- Async sessions via `AsyncSession` + `asyncpg` (PostgreSQL) or `aiosqlite` (SQLite).
+- **Alembic** for all schema migrations — never `create_all()` in production, never hand-edit schema.
+- Keep migrations in `alembic/` at the backend root; every schema change gets a migration.
+
+### Config — pydantic-settings
+
+- One `Settings(BaseSettings)` class per service, loaded from environment variables / `.env`.
+- All secrets via environment variables — never hardcoded, never committed.
+- Expose settings via `@lru_cache` singleton: `get_settings() -> Settings`.
+
+### Logging — structlog
+
+- **structlog** for all logging. No bare `print()` or `logging.getLogger()` in application code.
+- Bind request-scoped context (request_id, user_id) at middleware level.
+- JSON output in production; pretty-printed in development — control via `LOG_FORMAT` env var.
+
 ## AI-Assisted Development Rules
 
 - **Always write types first**, then implementation — types are the spec.
