@@ -24,3 +24,13 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          direct_prompt: |
+            Review this pull request. For every finding include a concrete fix.
+
+            Focus on:
+            1. Correctness: logic errors, edge cases, null handling
+            2. Security: injection, auth bypass, data exposure
+            3. Maintainability: naming, complexity, duplication
+            4. Compliance with project rules in .claude/rules/
+
+            Post findings as inline PR comments. Be concise.
