@@ -20,8 +20,9 @@ paths:
 ## Code Quality Toolchain
 
 - Package manager: **uv** (`uv pip install`, `uv run`)
-- Formatter + Linter: **ruff** (`ruff format` + `ruff check`, line length 88, configured in `pyproject.toml`)
+- Formatter + Linter: **ruff** (`ruff format` + `ruff check` incl. security rules, line length 88, configured in `pyproject.toml`)
 - Type checker: **mypy** (strict mode, configured in `pyproject.toml`)
+- Tests + Coverage: **pytest** + **pytest-cov** (coverage report on every test run, configured in `pyproject.toml`)
 - Before declaring code complete: mentally verify it passes `ruff check` + `ruff format --check` + `mypy --strict`
 
 ## AI-Assisted Development Rules
