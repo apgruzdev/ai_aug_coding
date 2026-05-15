@@ -13,7 +13,8 @@ jobs:
       - name: Lint backend (ruff)
         if: hashFiles('backend/**/*.py') != ''
         run: |
-          pip install ruff
+          pip install uv
+          uv pip install --system ruff
           ruff check backend/
           ruff format --check backend/
 
@@ -30,8 +31,9 @@ jobs:
       - name: Test backend (pytest)
         if: hashFiles('backend/**/*.py') != ''
         run: |
+          pip install uv
           cd backend
-          pip install -e ".[dev]"
+          uv pip install --system -e ".[dev]"
           pytest
 
       - name: Test frontend (vitest)
@@ -47,8 +49,9 @@ jobs:
       - name: Type check backend (mypy)
         if: hashFiles('backend/**/*.py') != ''
         run: |
+          pip install uv
           cd backend
-          pip install -e ".[dev]"
+          uv pip install --system -e ".[dev]"
           mypy .
 
       - name: Type check frontend (tsc)

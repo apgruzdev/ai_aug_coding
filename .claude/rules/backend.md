@@ -19,6 +19,7 @@ paths:
 
 ## Code Quality Toolchain
 
+- Package manager: **uv** (`uv pip install`, `uv run`)
 - Formatter + Linter: **ruff** (`ruff format` + `ruff check`, line length 88, configured in `pyproject.toml`)
 - Type checker: **mypy** (strict mode, configured in `pyproject.toml`)
 - Before declaring code complete: mentally verify it passes `ruff check` + `ruff format --check` + `mypy --strict`
