@@ -29,6 +29,7 @@ select = ["E", "F", "I", "UP", "B", "S"]
 "tests/**" = ["S101"]
 
 [tool.pytest.ini_options]
+# TODO: replace . with the actual package name once source layout is established (e.g. --cov=mypackage)
 addopts = "--cov=. --cov-report=term-missing"
 asyncio_mode = "auto"
 

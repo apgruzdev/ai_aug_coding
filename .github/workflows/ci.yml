@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
 
       - name: Lint backend (ruff)
         if: hashFiles('backend/**/*.py') != ''
         run: |
-          pip install uv
           uv pip install --system ruff
           ruff check backend/
           ruff format --check backend/
@@ -27,11 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
 
       - name: Test backend (pytest)
         if: hashFiles('backend/**/*.py') != ''
         run: |
-          pip install uv
           cd backend
           uv pip install --system -e ".[dev]"
           pytest
@@ -45,11 +45,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
 
       - name: Type check backend (mypy)
         if: hashFiles('backend/**/*.py') != ''
         run: |
-          pip install uv
           cd backend
           uv pip install --system -e ".[dev]"
           mypy .
