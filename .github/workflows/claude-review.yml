@@ -24,3 +24,20 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          model: claude-sonnet-4-6
+          direct_prompt: |
+            Review this pull request. Read the diff and post findings as inline PR comments.
+
+            Check:
+            - Correctness: logic errors, edge cases, null handling
+            - Security: injection, auth bypass, data exposure
+            - Code quality: naming, complexity, duplication, error handling
+            - Compliance with project rules in .claude/rules/
+
+            Categorize every issue:
+            - Critical (must fix): bugs, security issues, broken functionality
+            - Important (should fix): architecture problems, missing error handling, test gaps
+            - Minor (nice to have): style, optimization, polish
+
+            For each issue: file:line reference, what's wrong, why it matters, how to fix.
+            End with a top-level summary comment: "Ready to merge: Yes / No / With fixes" + 1-2 sentence assessment.
