@@ -1,3 +1,7 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "backend"
 version = "0.1.0"
@@ -25,3 +29,4 @@ addopts = "--cov=. --cov-report=term-missing"
 [tool.mypy]
 python_version = "3.11"
 strict = true
+exclude = ["tests/"]
