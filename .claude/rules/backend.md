@@ -25,6 +25,15 @@ paths:
 - Tests + Coverage: **pytest** + **pytest-cov** (coverage report on every test run, configured in `pyproject.toml`)
 - Before declaring code complete: mentally verify it passes `ruff check` + `ruff format --check` + `mypy --strict`
 
+## Testing
+
+- Framework: **pytest**. No unittest-style classes unless wrapping legacy code.
+- Test files: `tests/test_<module>.py`, mirroring the source tree.
+- Test functions: `test_<behaviour>` — name what the test asserts, not what it calls.
+- Use **fixtures** (`@pytest.fixture`) for shared setup; avoid module-level state.
+- Each test must be independent — no shared mutable state, no order dependency.
+- Test the public API, not implementation details. Refactoring internals must not break tests.
+
 ## AI-Assisted Development Rules
 
 - **Always write types first**, then implementation — types are the spec.
