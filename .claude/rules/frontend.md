@@ -57,7 +57,7 @@ Run from `frontend/`:
 pnpm install      # install dependencies
 pnpm dev          # dev server
 pnpm lint         # eslint
-pnpm typecheck    # vue-tsc --noEmit
+pnpm typecheck    # vue-tsc --build (honours tsconfig references)
 pnpm test         # vitest run
 pnpm build        # production build
 ```
