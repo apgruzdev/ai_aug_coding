@@ -26,6 +26,8 @@ export default [
         'error',
         {
           groups: [
+            // Node.js builtins (`node:` protocol)
+            ['^node:'],
             // External packages (npm, scoped)
             ['^@?\\w'],
             // Internal aliases (@/)

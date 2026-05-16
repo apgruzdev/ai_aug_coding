@@ -49,9 +49,10 @@ Enforced by **Prettier** — don't hand-format. Run `pnpm lint --fix`. Key setti
 
 Order (enforced by `eslint-plugin-simple-import-sort`):
 
-1. External packages (`vue`, `pinia`, `zod`)
-2. Internal aliases (`@/`)
-3. Relative imports (`./`)
+1. Node.js builtins with the `node:` protocol (config files only)
+2. External packages (`vue`, `pinia`, `zod`)
+3. Internal aliases (`@/`)
+4. Relative imports (`./`)
 
 Blank line between groups. Use `import type { Foo }` for type-only imports — stripped at build time with no runtime cost.
 
