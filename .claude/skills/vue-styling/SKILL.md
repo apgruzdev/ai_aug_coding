@@ -23,32 +23,21 @@ authority for all CSS work — `vue-components` defers here for styling.
 
 ---
 
-## Setup
+## How it's wired
 
 Tailwind v4 is CSS-first — there is no `tailwind.config.js`, no PostCSS config,
-and no autoprefixer. All configuration is done in CSS.
+and no autoprefixer. All configuration lives in CSS. The Tailwind deps and the
+Vite plugin are already in `package.json` and `vite.config.ts`; a feature change
+only touches the CSS below.
 
-```bash
-pnpm add tailwindcss @tailwindcss/vite
-```
-
-```typescript
-// vite.config.ts
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineConfig({
-  plugins: [vue(), tailwindcss()],
-})
-```
+The entry stylesheet, imported once in `src/main.ts`, is just:
 
 ```css
-/* src/assets/main.css — imported once in main.ts */
+/* src/assets/main.css */
 @import 'tailwindcss';
 ```
 
-That is the entire wiring. Everything below happens inside this CSS file.
+Everything below happens inside this file.
 
 In a monorepo, components outside the app's own `src/` are not scanned by
 default — add `@source` so their classes are picked up:

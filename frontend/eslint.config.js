@@ -1,6 +1,7 @@
-import pluginVue from 'eslint-plugin-vue'
 import vueTsEslintConfig from '@vue/eslint-config-typescript'
 import prettierConfig from 'eslint-config-prettier'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import pluginVue from 'eslint-plugin-vue'
 
 export default [
   {
@@ -9,11 +10,38 @@ export default [
   },
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/coverage/**'],
+    ignores: ['**/dist/**', '**/coverage/**', '**/node_modules/**'],
   },
 
   ...pluginVue.configs['flat/recommended'],
   ...vueTsEslintConfig(),
+
+  {
+    name: 'app/import-sort',
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
+    rules: {
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            // External packages (npm, scoped)
+            ['^@?\\w'],
+            // Internal aliases (@/)
+            ['^@/'],
+            // Parent imports
+            ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+            // Sibling / self imports
+            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+            // Style imports
+            ['^.+\\.s?css$'],
+          ],
+        },
+      ],
+      'simple-import-sort/exports': 'error',
+    },
+  },
 
   {
     name: 'app/rules',

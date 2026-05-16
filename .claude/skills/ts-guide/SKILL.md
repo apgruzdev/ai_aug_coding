@@ -47,7 +47,7 @@ Enforced by **Prettier** — don't hand-format. Run `pnpm lint --fix`. Key setti
 
 ## Imports
 
-Order (enforced by ESLint `import/order`):
+Order (enforced by `eslint-plugin-simple-import-sort`):
 
 1. External packages (`vue`, `pinia`, `zod`)
 2. Internal aliases (`@/`)
