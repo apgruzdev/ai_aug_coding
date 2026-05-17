@@ -6,7 +6,7 @@ Boilerplate for AI-augmented projects — Python backend, TypeScript frontend, C
 
 - Always write in English: code, comments, docs, commit messages.
 - After any change, check if README.md needs updating and update it if so.
-- Follow the development process: @docs/development-process.md
+- For all Git operations (branches, commits, PRs, releases, hotfixes) follow the `dev-workflow` skill.
 
 ## Stack
 
