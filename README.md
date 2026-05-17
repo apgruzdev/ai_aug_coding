@@ -62,5 +62,5 @@ Recommended additions:
 
 1. Branch from this repo
 2. Add `ANTHROPIC_API_KEY` secret — GitHub → Settings → Secrets and variables → Actions
-3. Set `CONTEXT7_API_KEY` in your environment — required for the context7 MCP server
+3. Set `CONTEXT7_API_KEY` for the context7 MCP server — add it to `.claude/settings.local.json` under `env`, or export it in your shell profile
 4. Update `CLAUDE.md` with project context
