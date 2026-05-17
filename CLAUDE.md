@@ -18,5 +18,5 @@ Boilerplate for AI-augmented projects — Python backend, TypeScript frontend, C
 <!-- Fill in when branching this template — list the commands you run most. -->
 
 - Backend:  e.g. `cd backend && python -m uvicorn main:app --reload`
-- Frontend: e.g. `cd frontend && npm run dev`
-- Tests:    e.g. `cd backend && pytest` / `cd frontend && npm test`
+- Frontend: e.g. `cd frontend && pnpm dev`
+- Tests:    e.g. `cd backend && pytest` / `cd frontend && pnpm test`

@@ -40,7 +40,7 @@ Avoid abbreviations that aren't universally known (`usr`, `mgr`), numbered suffi
 
 Enforced by **Prettier** — don't hand-format. Run `pnpm lint --fix`. Key settings:
 
-- 2-space indent, single quotes, trailing commas (`"all"`), semicolons on, max line length 100.
+- 2-space indent, single quotes, trailing commas (`"all"`), **no semicolons**, max line length 100.
 - Arrow functions: omit parens for single parameter (`x => x + 1`), include for zero or multiple.
 
 ---
