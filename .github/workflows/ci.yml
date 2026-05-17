@@ -19,24 +19,14 @@ jobs:
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
 
-      - name: Lint backend (ruff)
-        if: hashFiles('backend/**/*.py') != ''
-        run: |
-          uv pip install --system ruff
-          ruff check backend/
-          ruff format --check backend/
+      - name: Install backend lint deps
+        run: uv pip install --system ruff
 
       - name: Install frontend deps
-        if: hashFiles('frontend/package.json') != ''
         run: cd frontend && pnpm install --frozen-lockfile
 
-      - name: Lint frontend (eslint)
-        if: hashFiles('frontend/package.json') != ''
-        run: cd frontend && pnpm lint
-
-      - name: Format check frontend (prettier)
-        if: hashFiles('frontend/package.json') != ''
-        run: cd frontend && pnpm format:check
+      - name: Lint
+        run: make lint
 
   tests:
     runs-on: ubuntu-latest
@@ -52,20 +42,14 @@ jobs:
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
 
-      - name: Test backend (pytest)
-        if: hashFiles('backend/**/*.py') != ''
-        run: |
-          cd backend
-          uv pip install --system -e ".[dev]"
-          pytest
+      - name: Install backend deps
+        run: cd backend && uv pip install --system -e ".[dev]"
 
       - name: Install frontend deps
-        if: hashFiles('frontend/package.json') != ''
         run: cd frontend && pnpm install --frozen-lockfile
 
-      - name: Test frontend (vitest)
-        if: hashFiles('frontend/package.json') != ''
-        run: cd frontend && pnpm test
+      - name: Test
+        run: make test
 
   typecheck:
     runs-on: ubuntu-latest
@@ -81,17 +65,11 @@ jobs:
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
 
-      - name: Type check backend (mypy)
-        if: hashFiles('backend/**/*.py') != ''
-        run: |
-          cd backend
-          uv pip install --system -e ".[dev]"
-          mypy .
+      - name: Install backend deps
+        run: cd backend && uv pip install --system -e ".[dev]"
 
       - name: Install frontend deps
-        if: hashFiles('frontend/package.json') != ''
         run: cd frontend && pnpm install --frozen-lockfile
 
-      - name: Type check frontend (vue-tsc)
-        if: hashFiles('frontend/package.json') != ''
-        run: cd frontend && pnpm typecheck
+      - name: Typecheck
+        run: make typecheck
