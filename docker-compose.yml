@@ -1,0 +1,29 @@
+services:
+  backend:
+    image: ghcr.io/${GITHUB_OWNER}/${GITHUB_REPO}-backend:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    profiles: [backend, full]
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  frontend:
+    image: ghcr.io/${GITHUB_OWNER}/${GITHUB_REPO}-frontend:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    profiles: [frontend, full]
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.docker/config.json:/config.json:ro
+    environment:
+      WATCHTOWER_POLL_INTERVAL: "300"
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_LABEL_ENABLE: "true"
