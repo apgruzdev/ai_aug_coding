@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Lint backend (ruff)
         if: hashFiles('backend/**/*.py') != ''
@@ -26,11 +28,15 @@ jobs:
 
       - name: Install frontend deps
         if: hashFiles('frontend/package.json') != ''
-        run: cd frontend && pnpm install --no-frozen-lockfile
+        run: cd frontend && pnpm install --frozen-lockfile
 
       - name: Lint frontend (eslint)
         if: hashFiles('frontend/package.json') != ''
         run: cd frontend && pnpm lint
+
+      - name: Format check frontend (prettier)
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm format:check
 
   tests:
     runs-on: ubuntu-latest
@@ -43,6 +49,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Test backend (pytest)
         if: hashFiles('backend/**/*.py') != ''
@@ -53,7 +61,7 @@ jobs:
 
       - name: Install frontend deps
         if: hashFiles('frontend/package.json') != ''
-        run: cd frontend && pnpm install --no-frozen-lockfile
+        run: cd frontend && pnpm install --frozen-lockfile
 
       - name: Test frontend (vitest)
         if: hashFiles('frontend/package.json') != ''
@@ -70,6 +78,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Type check backend (mypy)
         if: hashFiles('backend/**/*.py') != ''
@@ -80,7 +90,7 @@ jobs:
 
       - name: Install frontend deps
         if: hashFiles('frontend/package.json') != ''
-        run: cd frontend && pnpm install --no-frozen-lockfile
+        run: cd frontend && pnpm install --frozen-lockfile
 
       - name: Type check frontend (vue-tsc)
         if: hashFiles('frontend/package.json') != ''
