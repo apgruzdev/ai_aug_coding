@@ -10,6 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Lint backend (ruff)
         if: hashFiles('backend/**/*.py') != ''
@@ -18,16 +26,31 @@ jobs:
           ruff check backend/
           ruff format --check backend/
 
+      - name: Install frontend deps
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm install --frozen-lockfile
+
       - name: Lint frontend (eslint)
-        if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
-        run: |
-          cd frontend && npm ci && npm run lint
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm lint
+
+      - name: Format check frontend (prettier)
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm format:check
 
   tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Test backend (pytest)
         if: hashFiles('backend/**/*.py') != ''
@@ -36,16 +59,27 @@ jobs:
           uv pip install --system -e ".[dev]"
           pytest
 
+      - name: Install frontend deps
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm install --frozen-lockfile
+
       - name: Test frontend (vitest)
-        if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
-        run: |
-          cd frontend && npm ci && npm test
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm test
 
   typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Type check backend (mypy)
         if: hashFiles('backend/**/*.py') != ''
@@ -54,7 +88,10 @@ jobs:
           uv pip install --system -e ".[dev]"
           mypy .
 
-      - name: Type check frontend (tsc)
-        if: hashFiles('frontend/**/*.ts', 'frontend/**/*.tsx') != ''
-        run: |
-          cd frontend && npm ci && npm run typecheck
+      - name: Install frontend deps
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm install --frozen-lockfile
+
+      - name: Type check frontend (vue-tsc)
+        if: hashFiles('frontend/package.json') != ''
+        run: cd frontend && pnpm typecheck
