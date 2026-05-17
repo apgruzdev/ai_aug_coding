@@ -76,9 +76,9 @@ Required checks (must all pass before merge):
 
 | Check | Backend | Frontend |
 |-------|---------|----------|
-| `lint` | ruff | eslint |
+| `lint` | ruff (lint + format check) | eslint + prettier |
 | `tests` | pytest | vitest |
-| `typecheck` | — | tsc |
+| `typecheck` | mypy | vue-tsc |
 | `claude-review` | automated Claude code review (no critical findings) | |
 
 ## Branch protection
