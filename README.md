@@ -45,9 +45,22 @@ make check      # all of the above
 
 The same commands run in CI on every PR.
 
+## MCP servers
+
+Pre-configured in `.mcp.json` (available to the whole team):
+
+| Server | Purpose | Key |
+|--------|---------|-----|
+| [context7](https://github.com/upstash/context7) | Up-to-date library docs in context | `CONTEXT7_API_KEY` |
+
+Recommended additions:
+
+- [MCP Toolbox for Databases](https://github.com/googleapis/mcp-toolbox) — query and manage databases
+- [Docker MCP Toolkit](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/) — interact with containers and images
+
 ## Usage
 
 1. Branch from this repo
 2. Add `ANTHROPIC_API_KEY` secret — GitHub → Settings → Secrets and variables → Actions
-3. Update `CLAUDE.md` with project context
-4. Start coding following [`docs/development-process.md`](docs/development-process.md)
+3. Set `CONTEXT7_API_KEY` for the context7 MCP server — add it to `.claude/settings.local.json` under `env`, or export it in your shell profile
+4. Update `CLAUDE.md` with project context
