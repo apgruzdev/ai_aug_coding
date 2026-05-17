@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.11"
       - uses: pnpm/action-setup@v4
         with:
           version: 9
@@ -20,19 +22,28 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install backend lint deps
+        if: hashFiles('backend/**/*.py') != ''
         run: uv pip install --system ruff
 
+      - name: Lint backend
+        if: hashFiles('backend/**/*.py') != ''
+        run: make lint-backend
+
       - name: Install frontend deps
+        if: hashFiles('frontend/package.json') != ''
         run: cd frontend && pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: make lint
+      - name: Lint frontend
+        if: hashFiles('frontend/package.json') != ''
+        run: make lint-frontend
 
   tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.11"
       - uses: pnpm/action-setup@v4
         with:
           version: 9
@@ -43,19 +54,28 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install backend deps
+        if: hashFiles('backend/**/*.py') != ''
         run: cd backend && uv pip install --system -e ".[dev]"
 
+      - name: Test backend
+        if: hashFiles('backend/**/*.py') != ''
+        run: make test-backend
+
       - name: Install frontend deps
+        if: hashFiles('frontend/package.json') != ''
         run: cd frontend && pnpm install --frozen-lockfile
 
-      - name: Test
-        run: make test
+      - name: Test frontend
+        if: hashFiles('frontend/package.json') != ''
+        run: make test-frontend
 
   typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.11"
       - uses: pnpm/action-setup@v4
         with:
           version: 9
@@ -66,10 +86,17 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install backend deps
+        if: hashFiles('backend/**/*.py') != ''
         run: cd backend && uv pip install --system -e ".[dev]"
 
+      - name: Typecheck backend
+        if: hashFiles('backend/**/*.py') != ''
+        run: make typecheck-backend
+
       - name: Install frontend deps
+        if: hashFiles('frontend/package.json') != ''
         run: cd frontend && pnpm install --frozen-lockfile
 
-      - name: Typecheck
-        run: make typecheck
+      - name: Typecheck frontend
+        if: hashFiles('frontend/package.json') != ''
+        run: make typecheck-frontend
