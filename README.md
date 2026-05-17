@@ -34,6 +34,17 @@ Branch from this repo to start a new project with all the defaults already in pl
         └── concise.md               # Custom system-prompt style
 ```
 
+## Local checks
+
+```bash
+make lint       # ruff + eslint + prettier
+make typecheck  # mypy + vue-tsc
+make test       # pytest + vitest
+make check      # all of the above
+```
+
+The same commands run in CI on every PR.
+
 ## Usage
 
 1. Branch from this repo
