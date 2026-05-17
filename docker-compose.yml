@@ -1,0 +1,34 @@
+services:
+  backend:
+    image: ghcr.io/${GITHUB_REPOSITORY}-backend:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    profiles: [backend, full]
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY}-frontend:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    profiles: [frontend, full]
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  # Watchtower has no profile — it always starts regardless of active profile.
+  # Mounting the Docker socket grants container-equivalent root access to the host;
+  # this is required for Watchtower to restart containers and is an accepted trade-off.
+  watchtower:
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Provides ghcr.io credentials for pulling private images.
+      # HOME is the user running docker compose; adjust if using sudo.
+      - ${HOME}/.docker/config.json:/config.json:ro
+    environment:
+      WATCHTOWER_POLL_INTERVAL: "300"
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_LABEL_ENABLE: "true"
