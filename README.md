@@ -84,7 +84,7 @@ echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-std
 
 # 2. Copy and fill in .env
 cp .env.example .env
-# edit .env: set GITHUB_OWNER and GITHUB_REPO
+# edit .env: set GITHUB_REPOSITORY to owner/repo-name
 
 # 3. Start services — choose a profile: backend | frontend | full
 docker compose --profile full up -d
