@@ -72,7 +72,7 @@ export default [
       'vue/no-unused-vars': 'error',
 
       /* General */
-      'no-console': 'warn',
+      'no-console': 'error',
     },
   },
 

@@ -160,10 +160,12 @@ const route = useRoute()
 // Navigate with named routes — not path strings
 router.push({ name: 'user', params: { id: userId } })
 
-// Read params
-const userId = route.params.id as string
+// Read params — without typed routes, params can be `string | string[]`,
+// and with `noUncheckedIndexedAccess` they may also be `undefined`.
+// Normalise defensively; never cast with `as string`.
+const userId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id ?? ''
 
-// Query params with type safety
+// Query params — same shape; coerce with Number/String + default
 const page = Number(route.query.page ?? 1)
 ```
 

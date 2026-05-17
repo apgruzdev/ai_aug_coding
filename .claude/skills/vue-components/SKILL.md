@@ -208,12 +208,24 @@ Decision:
 - Avoid `reactive` for objects you'll reassign — use `ref<T>()` instead.
 - Prefer `computed` over deriving values inside a `watch` callback.
 
-**Destructuring reactive/props loses reactivity** — use `toRefs`:
+**Vue 3.5+ (the project target): destructured props stay reactive.** No
+`toRefs` needed for in-component use:
 
 ```typescript
-const { name, email } = toRefs(props)  // ✓ reactive refs
-const { name } = props                  // ✗ plain strings, not reactive
+const { name, email } = defineProps<{ name: string; email: string }>()
+// `name` and `email` track prop changes — read directly in template/computed
 ```
+
+Use `toRefs(props)` only when **passing a prop as a `Ref` to a composable**
+that expects refs:
+
+```typescript
+const { userId } = toRefs(props)
+const { user } = useUser(userId)         // composable expects Ref<string>
+```
+
+For a `reactive(...)` object, the same rule applies — plain destructuring
+breaks reactivity, `toRefs` preserves it.
 
 ---
 
