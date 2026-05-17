@@ -9,31 +9,42 @@ Vitest + Vue Test Utils patterns for Vue 3. All imports from `vitest`, not `jest
 
 ---
 
-## Setup
+## How it's wired
+
+Vitest config is split from Vite config to avoid plugin-type conflicts under
+`vue-tsc --build`. `vite.config.ts` stays pure-Vite; `vitest.config.ts` extends
+it with the `test` field via `mergeConfig`:
 
 ```typescript
-// vite.config.ts (or vitest.config.ts)
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+// vitest.config.ts
+import { defineConfig, mergeConfig } from 'vitest/config'
 
-export default defineConfig({
-  plugins: [vue()],
-  test: {
-    environment: 'jsdom',
-    globals: true,           // no need to import describe/it/expect
-    setupFiles: ['./src/test/setup.ts'],
-  },
-})
+import viteConfig from './vite.config'
+
+export default mergeConfig(
+  viteConfig,
+  defineConfig({
+    test: {
+      environment: 'jsdom',
+      globals: true,           // no need to import describe/it/expect
+      setupFiles: ['./src/test/setup.ts'],
+    },
+  }),
+)
 ```
 
+Global setup that runs before every test file lives in `src/test/setup.ts`:
+
 ```typescript
-// src/test/setup.ts
 import { config } from '@vue/test-utils'
 import { createPinia } from 'pinia'
 
-// Global plugins available in all tests
 config.global.plugins = [createPinia()]
 ```
+
+Registering Pinia globally makes `mount()` resolve `useXxxStore()` calls
+inside components. Per-test state isolation is still done with
+`setActivePinia(createPinia())` in `beforeEach` (see the Pinia section below).
 
 ---
 
