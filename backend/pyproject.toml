@@ -36,3 +36,4 @@ asyncio_mode = "auto"
 [tool.mypy]
 python_version = "3.11"
 strict = true
+exclude = ["tests/"]
