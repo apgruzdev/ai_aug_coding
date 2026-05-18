@@ -41,7 +41,7 @@ Boilerplate for AI-augmented projects. Branch from this repo to start a new proj
     │   └── frontend.md              # TypeScript rules — auto-loaded when editing frontend/
     └── skills/
         ├── dev-workflow/            # Git branching, commit, PR, and release process
-        └── ...                      # Python and TypeScript style / typing guides
+        └── ...                      # Python, TypeScript, Vue, and code-review skills
 ```
 
 ## Getting started
@@ -52,7 +52,7 @@ Boilerplate for AI-augmented projects. Branch from this repo to start a new proj
    - `ANTHROPIC_API_KEY` — required for automated Claude code review on PRs
 
 3. **Import the branch ruleset** — Settings → Rules → Rulesets → Import → `.github/rulesets/main_dev_rule.json`.
-   After the first CI run, add required status checks (`lint`, `tests`, `typecheck`, `claude-review`) manually.
+   Required status checks (`lint`, `tests`, `typecheck`, `claude-review`) are included in the ruleset and activate automatically once each check has reported at least once.
 
 4. **Configure MCP** — add `CONTEXT7_API_KEY` to `.claude/settings.local.json` under `env`, or export it in your shell:
    ```json
@@ -76,7 +76,7 @@ The same checks run in CI on every PR.
 
 ## Git workflow
 
-Feature and fix work branches off `develop` via short-lived `feature/<name>` or `fix/<name>` branches and merges back via squash PR. Releases and hotfixes use a bridge-branch process to avoid structural merge conflicts. The full process — branch naming, commit format, PR rules, release steps — is in `.claude/skills/dev-workflow/SKILL.md` and is loaded automatically by Claude Code.
+Feature and fix work branches off `develop` via short-lived `feature/<name>` or `fix/<name>` branches and merge back via squash PRs. Releases and hotfixes use a bridge-branch process to avoid structural merge conflicts. The full process — branch naming, commit format, PR rules, release steps — is in `.claude/skills/dev-workflow/SKILL.md` and is loaded automatically by Claude Code.
 
 ## CD
 
@@ -86,6 +86,7 @@ Docker images are built and pushed to `ghcr.io` on every push to `main`. Only se
 
 ```bash
 # 1. Authenticate with ghcr.io (required for private repos)
+# Create a PAT with read:packages scope and export it as GITHUB_TOKEN
 echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
 
 # 2. Configure .env — GITHUB_REPOSITORY must be lowercase (e.g. alice/my-project)
