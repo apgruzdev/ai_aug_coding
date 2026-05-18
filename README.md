@@ -30,14 +30,8 @@ Branch from this repo to start a new project with all the defaults already in pl
     ├── rules/
     │   ├── backend.md               # Python rules, loaded when editing backend/
     │   └── frontend.md              # TypeScript rules, loaded when editing frontend/
-    ├── skills/
-    │   └── example/SKILL.md         # Reusable prompt, invoked with /example
-    ├── commands/
-    │   └── fix-issue.md             # Single-file prompt, invoked with /fix-issue
-    ├── agents/
-    │   └── code-reviewer.md         # Subagent with its own context and tool access
-    └── output-styles/
-        └── concise.md               # Custom system-prompt style
+    └── skills/
+        └── <name>/SKILL.md          # Reusable prompt, invoked with /<name>
 ```
 
 ## Local checks
@@ -84,10 +78,14 @@ echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-std
 
 # 2. Copy and fill in .env
 cp .env.example .env
-# edit .env: set GITHUB_REPOSITORY to owner/repo-name
+# edit .env: set GITHUB_REPOSITORY to owner/repo-name (must be lowercase)
 
-# 3. Start services — choose a profile: backend | frontend | full
-docker compose --profile full up -d
+# 3. Start services — choose a profile matching what's in the repo
+docker compose --profile full up -d      # both backend and frontend
+docker compose --profile backend up -d   # backend only
+docker compose --profile frontend up -d  # frontend only
 ```
 
 Watchtower polls `ghcr.io` every 5 minutes and automatically restarts containers when a new `:latest` image is pushed.
+
+> **Note:** `GITHUB_REPOSITORY` must be all-lowercase (e.g. `alice/my-project`). ghcr.io rejects uppercase names with a cryptic error. Verify your `.env` before first run.
