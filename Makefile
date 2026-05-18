@@ -8,7 +8,8 @@ lint-backend:
 	ruff format --check backend/
 
 lint-frontend:
-	cd frontend && pnpm lint && pnpm format:check
+	cd frontend && pnpm lint
+	cd frontend && pnpm format:check
 
 lint: lint-backend lint-frontend
 

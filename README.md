@@ -80,8 +80,10 @@ echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-std
 cp .env.example .env
 # edit .env: set GITHUB_REPOSITORY to owner/repo-name (must be lowercase)
 
-# 3. Start services — choose a profile: backend | frontend | full
-docker compose --profile full up -d
+# 3. Start services — choose a profile matching what's in the repo
+docker compose --profile full up -d      # both backend and frontend
+docker compose --profile backend up -d   # backend only
+docker compose --profile frontend up -d  # frontend only
 ```
 
 Watchtower polls `ghcr.io` every 5 minutes and automatically restarts containers when a new `:latest` image is pushed.

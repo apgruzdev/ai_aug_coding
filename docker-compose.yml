@@ -21,7 +21,7 @@ services:
   # Mounting the Docker socket grants container-equivalent root access to the host;
   # this is required for Watchtower to restart containers and is an accepted trade-off.
   watchtower:
-    image: containrrr/watchtower:latest
+    image: containrrr/watchtower:1.7.1
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
