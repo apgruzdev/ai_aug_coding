@@ -4,7 +4,8 @@
 .PHONY: check
 
 lint-backend:
-	ruff check backend/ && ruff format --check backend/
+	ruff check backend/
+	ruff format --check backend/
 
 lint-frontend:
 	cd frontend && pnpm lint && pnpm format:check

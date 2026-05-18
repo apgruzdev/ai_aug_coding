@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/${GITHUB_REPOSITORY}-backend:latest
+    image: ghcr.io/${GITHUB_REPOSITORY}/backend:latest
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -9,7 +9,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
 
   frontend:
-    image: ghcr.io/${GITHUB_REPOSITORY}-frontend:latest
+    image: ghcr.io/${GITHUB_REPOSITORY}/frontend:latest
     restart: unless-stopped
     ports:
       - "80:80"

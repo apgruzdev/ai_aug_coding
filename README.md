@@ -85,3 +85,5 @@ docker compose --profile full up -d
 ```
 
 Watchtower polls `ghcr.io` every 5 minutes and automatically restarts containers when a new `:latest` image is pushed.
+
+> **Note:** `GITHUB_REPOSITORY` must be all-lowercase (e.g. `alice/my-project`). ghcr.io rejects uppercase names with a cryptic error. Verify your `.env` before first run.
