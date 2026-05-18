@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   detect:
     runs-on: ubuntu-latest
@@ -14,8 +18,16 @@ jobs:
       - uses: actions/checkout@v4
       - id: check
         run: |
-          [ -f backend/Dockerfile ] && echo "has_backend=true" >> $GITHUB_OUTPUT || echo "has_backend=false" >> $GITHUB_OUTPUT
-          [ -f frontend/Dockerfile ] && echo "has_frontend=true" >> $GITHUB_OUTPUT || echo "has_frontend=false" >> $GITHUB_OUTPUT
+          if [ -f backend/Dockerfile ]; then
+            echo "has_backend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_backend=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -f frontend/Dockerfile ]; then
+            echo "has_frontend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_frontend=false" >> "$GITHUB_OUTPUT"
+          fi
 
   build-backend:
     needs: detect

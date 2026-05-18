@@ -30,14 +30,8 @@ Branch from this repo to start a new project with all the defaults already in pl
     ├── rules/
     │   ├── backend.md               # Python rules, loaded when editing backend/
     │   └── frontend.md              # TypeScript rules, loaded when editing frontend/
-    ├── skills/
-    │   └── example/SKILL.md         # Reusable prompt, invoked with /example
-    ├── commands/
-    │   └── fix-issue.md             # Single-file prompt, invoked with /fix-issue
-    ├── agents/
-    │   └── code-reviewer.md         # Subagent with its own context and tool access
-    └── output-styles/
-        └── concise.md               # Custom system-prompt style
+    └── skills/
+        └── <name>/SKILL.md          # Reusable prompt, invoked with /<name>
 ```
 
 ## Local checks
@@ -84,7 +78,7 @@ echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-std
 
 # 2. Copy and fill in .env
 cp .env.example .env
-# edit .env: set GITHUB_REPOSITORY to owner/repo-name
+# edit .env: set GITHUB_REPOSITORY to owner/repo-name (must be lowercase)
 
 # 3. Start services — choose a profile: backend | frontend | full
 docker compose --profile full up -d
